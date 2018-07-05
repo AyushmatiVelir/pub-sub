@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "PubSubCore": {
+      "commandName": "Project",
+      "commandLineArgs": "true | C:\\MyData\\filelist.txt"
+    }
+  }
+}

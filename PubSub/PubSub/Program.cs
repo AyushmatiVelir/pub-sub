@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PubSub.Filters;
 using PubSub.Plugins;
 using PubSub.Processors;
 using PubSub.Publishers;
@@ -38,16 +39,13 @@ namespace PubSub
 			var strategySubscriber = new StrategySubscriber();
 			var newsSubscriber = new NewsSubscriber();
 			var cultureSubscriber = new CultureSubscriber();
-
-			publisher.Subscribe(strategySubscriber);
-			publisher.Subscribe(newsSubscriber);
-
-			publisher.NotifyAll("Strategy and News!");
-
-			publisher.Subscribe(cultureSubscriber);
-			publisher.Unsubscribe(strategySubscriber);
-
-			publisher.NotifyAll("News and Culture");
+			
+			Filter.AddSubscriber("all", strategySubscriber);
+			Filter.AddSubscriber("all", newsSubscriber);
+			publisher.Publish(entities, Filter.GetSubscribers("all"));
+			Filter.RemoveSubscriber("all", strategySubscriber);
+			Filter.AddSubscriber("all", cultureSubscriber);
+			publisher.Publish(entities, Filter.GetSubscribers("all"));
 
 			Console.ReadLine();
 		}

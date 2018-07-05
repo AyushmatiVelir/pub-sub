@@ -43,8 +43,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Filters\Filter.cs" />
     <Compile Include="Models\FileDetailModel.cs" />
     <Compile Include="Plugins\TextFileSettings.cs" />
+    <Compile Include="Processors\ParseTextFileProcessor.cs" />
     <Compile Include="Processors\ReadTextFileProcessor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

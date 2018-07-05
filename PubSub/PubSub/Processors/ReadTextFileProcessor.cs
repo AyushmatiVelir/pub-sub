@@ -10,19 +10,19 @@ namespace PubSub.Processors
 {
 	public class ReadTextFileProcessor
 	{
-		public void ReadData(TextFileSettings settings)
+		public List<string[]> ReadData(TextFileSettings settings)
 		{
 			if (settings == null)
 			{
-				return;
+				return null;
 			}
 			if (string.IsNullOrWhiteSpace(settings.Path))
 			{
-				return;
+				return null;
 			}
 			if (!File.Exists(settings.Path))
 			{
-				return;
+				return null;
 			}
 			//
 			//read the file, one line at a time
@@ -49,9 +49,12 @@ namespace PubSub.Processors
 					lines.Add(values);
 				}
 			}
+			return lines;
 			//
 			//add the data that was read from the file to a plugin
 			//var dataSettings = new IterableDataSettings(lines);
+
+
 		}
 	}
 }

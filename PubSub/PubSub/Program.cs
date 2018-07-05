@@ -28,8 +28,10 @@ namespace PubSub
 				Path = args[2]
 			};
 
-			ReadTextFileProcessor textFileProcessor=new ReadTextFileProcessor();
-			textFileProcessor.ReadData(settings);
+			ReadTextFileProcessor readFileProcessor = new ReadTextFileProcessor();
+			var lines = readFileProcessor.ReadData(settings);
+			ParseTextFileProcessor parseFileProcessor = new ParseTextFileProcessor();
+			var entities = parseFileProcessor.ParseData(lines);
 
 			var publisher = new Publisher();
 

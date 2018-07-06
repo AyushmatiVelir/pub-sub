@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace PubSub.Models
 {
-	public class FileDetailModel
+	public class NewsDetailsModel
 	{
-		public string Topic { get; set; }
 		public string Title { get; set; }
+		public string Category { get; set; }
 		public string Description { get; set; }
 		public string Author { get; set; }
 		public DateTime PublishDate { get; set; }

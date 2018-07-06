@@ -9,20 +9,20 @@ namespace PubSub.Processors
 {
 	public class ParseTextFileProcessor
 	{
-		public List<FileDetailModel> ParseData(List<string[]> lines)
+		public List<NewsDetailsModel> ParseData(List<string[]> lines)
 		{
 			if (lines == null)
 			{
 				return null;
 			}
 
-			var entities = new List<FileDetailModel>();
+			var entities = new List<NewsDetailsModel>();
 			foreach (var line in lines)
 			{
 				if (line.Length != 5) continue;
-				var file = new FileDetailModel
+				var file = new NewsDetailsModel
 				{
-					Topic = line[0],
+					Category = line[0],
 					Title = line[1],
 					Description = line[2],
 					Author = line[3],

@@ -10,6 +10,6 @@ namespace PubSub.Publishers
 {
 	public interface IPublisher
 	{
-		void Publish(List<FileDetailModel> entitiesList, List<ISubscriber> subscribers);
+		void Publish(NewsDetailsModel newsDetails, List<ISubscriber> subscribers);
 	}
 }

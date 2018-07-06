@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PubSubCore", "PubSubCore\PubSubCore.csproj", "{DB7AE0AA-B9D1-41E8-B731-A128208328B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestProject1", "UnitTestProject1\UnitTestProject1.csproj", "{57B3FF01-D795-4C4E-BD3C-EC80C0981BC1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PubSubCoreTests", "UnitTestProject1\PubSubCoreTests.csproj", "{57B3FF01-D795-4C4E-BD3C-EC80C0981BC1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

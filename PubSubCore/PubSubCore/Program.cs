@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using PubSub.Filters;
+using PubSub.Models;
 using PubSub.Plugins;
 using PubSub.Processors;
 using PubSub.Publishers;
 using PubSub.Subscribers;
+using PubSubCore.Services;
 
 namespace PubSubCore
 {
@@ -11,35 +14,47 @@ namespace PubSubCore
 	{
 		public static void Main(string[] args)
 		{
-			if (args.Length < 3)
+			var entertainmentSubscriber = new EntertainmentNewsSubscriber();
+			var economicsSubscriber = new EconomicNewsSubscriber();
+			var sportsSubscriber = new SportsNewsSubscriber();
+
+			var subscribeService = new SubscribeService();
+			subscribeService.Subscribe("entertainment", new List<ISubscriber> { entertainmentSubscriber });
+			subscribeService.Subscribe("news", new List<ISubscriber> { economicsSubscriber });
+			subscribeService.Subscribe("sports", new List<ISubscriber> { sportsSubscriber });
+			subscribeService.Subscribe("all", new List<ISubscriber> { entertainmentSubscriber, economicsSubscriber, sportsSubscriber });
+
+			Console.WriteLine("Enter news title:");
+			string line = Console.ReadLine();
+			Console.WriteLine("Enter news category");
+			string category = Console.ReadLine();
+			Console.WriteLine("Enter author name");
+			string authorName = Console.ReadLine();
+			Console.WriteLine("Enter description");
+			string description = Console.ReadLine();
+
+			if (!string.IsNullOrWhiteSpace(line) && !string.IsNullOrWhiteSpace(category) &&
+				!string.IsNullOrWhiteSpace(authorName) && !string.IsNullOrWhiteSpace(description))
 			{
-				Console.WriteLine("Please invoke with all the 3 arguments.");
-				return;
+				NewsDetailsModel news = new NewsDetailsModel
+				{
+					Title = line,
+					Category = category,
+					Author = authorName,
+					Description = description,
+				};
+
+				IDataTransformService dataTransformService = new DataTransformService();
+				dataTransformService.TransformData(news);
+
+				var publishService = new PublishService();
+				publishService.Publish(news, news.Category.ToLower());
+
 			}
-			var settings = new TextFileSettings
+			else
 			{
-				ColumnHeadersInFirstLine = bool.TryParse(args[0], out var hasHeaders) && hasHeaders,
-				ColumnSeparator = args[1],
-				Path = args[2]
-			};
-
-			ReadTextFileProcessor readFileProcessor = new ReadTextFileProcessor();
-			var lines = readFileProcessor.ReadData(settings);
-			ParseTextFileProcessor parseFileProcessor = new ParseTextFileProcessor();
-			var entities = parseFileProcessor.ParseData(lines);
-
-			var publisher = new Publisher();
-
-			var strategySubscriber = new StrategySubscriber();
-			var newsSubscriber = new NewsSubscriber();
-			var cultureSubscriber = new CultureSubscriber();
-
-			Filter.AddSubscriber("all", strategySubscriber);
-			Filter.AddSubscriber("all", newsSubscriber);
-			publisher.Publish(entities, Filter.GetSubscribers("all"));
-			Filter.RemoveSubscriber("all", strategySubscriber);
-			Filter.AddSubscriber("all", cultureSubscriber);
-			publisher.Publish(entities, Filter.GetSubscribers("all"));
+				Console.WriteLine("Cannot process because this is an incomplete news record");
+			}
 
 			Console.ReadLine();
 		}

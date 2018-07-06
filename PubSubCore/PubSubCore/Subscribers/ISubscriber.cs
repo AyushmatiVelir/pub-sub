@@ -9,6 +9,6 @@ namespace PubSub.Subscribers
 {
 	public interface ISubscriber
 	{
-		void DisplayData(List<FileDetailModel> message);
+		void DisplayData(NewsDetailsModel news);
 	}
 }

@@ -10,11 +10,14 @@ namespace PubSubCore.Services
 	{
 		public NewsDetailsModel TransformData(string title, string category, string author, string description)
 		{
+			if (string.IsNullOrWhiteSpace(title) || string.IsNullOrWhiteSpace(category) ||
+				string.IsNullOrWhiteSpace(description))
+				return null;
 			return new NewsDetailsModel
 			{
 				Title = title.ToTitleCase(),
 				Category = category.ToLower(),
-				Author = author.ToTitleCase(),
+				Author = string.IsNullOrWhiteSpace(author) ? string.Empty : author.ToTitleCase(),
 				Description = description.TrimLength(100),
 				PublishDate = DateTime.Now
 			};

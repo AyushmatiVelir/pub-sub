@@ -9,6 +9,8 @@ namespace PubSubCore.Extensions
 	{
 		public static string ToTitleCase(this string text)
 		{
+			if (string.IsNullOrWhiteSpace(text))
+				return string.Empty;
 			TextInfo textInfo = new CultureInfo("en-us", false).TextInfo;
 			return textInfo.ToTitleCase(text.ToLower());
 		}

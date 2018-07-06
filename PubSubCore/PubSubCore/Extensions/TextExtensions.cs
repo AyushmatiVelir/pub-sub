@@ -10,12 +10,14 @@ namespace PubSubCore.Extensions
 		public static string ToTitleCase(this string text)
 		{
 			TextInfo textInfo = new CultureInfo("en-us", false).TextInfo;
-			return textInfo.ToTitleCase(text);
+			return textInfo.ToTitleCase(text.ToLower());
 		}
 
-		public static string TrimLength(this string text,int numberOfChars)
+		public static string TrimLength(this string text, int numberOfChars)
 		{
-			return text.Substring(0, numberOfChars).Trim();
+			if (string.IsNullOrWhiteSpace(text))
+				return string.Empty;
+			return numberOfChars > text.Length ? text : text.Substring(0, numberOfChars).Trim();
 		}
 	}
 }

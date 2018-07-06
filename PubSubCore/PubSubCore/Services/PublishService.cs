@@ -23,7 +23,7 @@ namespace PubSubCore.Services
 				}
 				catch
 				{
-					//Log
+					Console.WriteLine("Error in subscriber");
 				}
 			}
 		}

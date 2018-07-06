@@ -8,12 +8,16 @@ namespace PubSubCore.Services
 {
 	public class DataTransformService : IDataTransformService
 	{
-		public void TransformData(NewsDetailsModel newsRecord)
+		public NewsDetailsModel TransformData(string title, string category, string author, string description)
 		{
-			newsRecord.Author = newsRecord.Author.ToTitleCase();
-			newsRecord.Title = newsRecord.Title.ToTitleCase();
-			newsRecord.Description = newsRecord.Description.TrimLength(100);
-			newsRecord.PublishDate = DateTime.Now;
+			return new NewsDetailsModel
+			{
+				Title = title.ToTitleCase(),
+				Category = category.ToLower(),
+				Author = author.ToTitleCase(),
+				Description = description.TrimLength(100),
+				PublishDate = DateTime.Now
+			};
 		}
 	}
 }

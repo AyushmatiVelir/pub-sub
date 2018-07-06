@@ -5,8 +5,8 @@ using PubSub.Models;
 
 namespace PubSubCore.Services
 {
-    public interface IDataTransformService
-    {
-	    void TransformData(NewsDetailsModel newsRecord);
-    }
+	public interface IDataTransformService
+	{
+		NewsDetailsModel TransformData(string title, string category, string author, string description);
+	}
 }

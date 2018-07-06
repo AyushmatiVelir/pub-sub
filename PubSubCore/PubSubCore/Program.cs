@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using PubSub.Filters;
 using PubSub.Models;
-using PubSub.Plugins;
-using PubSub.Processors;
-using PubSub.Publishers;
 using PubSub.Subscribers;
 using PubSubCore.Services;
 

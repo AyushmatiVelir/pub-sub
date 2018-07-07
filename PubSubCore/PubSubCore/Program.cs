@@ -17,10 +17,10 @@ namespace PubSubCore
 
 			var serviceProvider = new ServiceCollection()
 				.AddSingleton<ISubscribeService, SubscribeService>()
-				.AddSingleton<IPublishService, PublishService>()
+				.AddSingleton<IPublisher, Publisher>()
 				.AddSingleton<IDataTransformService, DataTransformService>()
 				.BuildServiceProvider();
-			
+
 			var subscribeService = serviceProvider.GetService<ISubscribeService>();
 			subscribeService.Subscribe("entertainment", new List<ISubscriber> { entertainmentSubscriber });
 			subscribeService.Subscribe("news", new List<ISubscriber> { economicsSubscriber });
@@ -41,8 +41,8 @@ namespace PubSubCore
 			{
 				var dataTransformService = serviceProvider.GetService<IDataTransformService>();
 				var news = dataTransformService.TransformData(title, category, authorName, description);
-				var publishService = serviceProvider.GetService<IPublishService>();
-				publishService.Publish(news, news.Category.ToLower());
+				var publisher = serviceProvider.GetService<IPublisher>();
+				publisher.Publish(news, news.Category.ToLower());
 			}
 			else
 			{

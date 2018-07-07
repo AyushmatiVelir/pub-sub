@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using PubSub.Models;
 using PubSub.Subscribers;
 
 namespace PubSub.Filters
@@ -7,6 +8,24 @@ namespace PubSub.Filters
 	public class Filter
 	{
 		static Dictionary<string, List<ISubscriber>> _subscribersList = new Dictionary<string, List<ISubscriber>>();
+
+		public static void PushToSubscribers(NewsDetailsModel data, string topicName)
+		{
+			List<ISubscriber> subscribers = GetSubscribers(topicName);
+			if (subscribers == null) return;
+
+			foreach (var subscriber in subscribers)
+			{
+				try
+				{
+					subscriber.DisplayData(data);
+				}
+				catch
+				{
+					Console.WriteLine("Error in subscriber");
+				}
+			}
+		}
 
 		public static Dictionary<string, List<ISubscriber>> SubscribersList
 		{
@@ -67,7 +86,6 @@ namespace PubSub.Filters
 				}
 			}
 		}
-
 
 	}
 }

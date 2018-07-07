@@ -5,7 +5,7 @@ using PubSub.Models;
 
 namespace PubSubCore.Services
 {
-    interface IPublishService
+    interface IPublisher
     {
 	    void Publish(NewsDetailsModel data, string topicName);
     }

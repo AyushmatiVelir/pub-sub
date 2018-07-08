@@ -24,7 +24,7 @@ namespace PubSubCore
 
 			var subscribeService = serviceProvider.GetService<ISubscribeService>();
 			subscribeService.Subscribe("entertainment", new List<ISubscriber> { entertainmentSubscriber });
-			subscribeService.Subscribe("news", new List<ISubscriber> { economicsSubscriber });
+			subscribeService.Subscribe("economics", new List<ISubscriber> { economicsSubscriber });
 			subscribeService.Subscribe("sports", new List<ISubscriber> { sportsSubscriber });
 			subscribeService.Subscribe("all", new List<ISubscriber> { entertainmentSubscriber, economicsSubscriber, sportsSubscriber });
 

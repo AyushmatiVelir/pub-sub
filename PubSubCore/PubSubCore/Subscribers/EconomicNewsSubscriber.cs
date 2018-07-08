@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using PubSub.Models;
+using PubSub.Subscribers;
+using PubSubCore.Models;
 
-namespace PubSub.Subscribers
+namespace PubSubCore.Subscribers
 {
 	public class EconomicNewsSubscriber : ISubscriber
 	{

@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
-using PubSub.Models;
 using PubSub.Subscribers;
+using publisher = PubSubCore.Publisher;
 using PubSubCore.Services;
+using PubSubCore.Subscribers;
 
 namespace PubSubCore
 {
@@ -17,7 +18,7 @@ namespace PubSubCore
 
 			var serviceProvider = new ServiceCollection()
 				.AddSingleton<ISubscribeService, SubscribeService>()
-				.AddSingleton<IPublisher, Publisher>()
+				.AddSingleton<publisher.IPublisher, publisher.Publisher>()
 				.AddSingleton<IDataTransformService, DataTransformService>()
 				.BuildServiceProvider();
 
@@ -41,7 +42,7 @@ namespace PubSubCore
 			{
 				var dataTransformService = serviceProvider.GetService<IDataTransformService>();
 				var news = dataTransformService.TransformData(title, category, authorName, description);
-				var publisher = serviceProvider.GetService<IPublisher>();
+				var publisher = serviceProvider.GetService<publisher.IPublisher>();
 				publisher.Publish(news, news.Category.ToLower());
 			}
 			else

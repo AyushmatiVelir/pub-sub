@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using PubSub.Filters;
 using PubSub.Subscribers;
+using PubSubCore.Filters;
+using PubSubCore.Subscribers;
 
 namespace PubSubCore.Services
 {

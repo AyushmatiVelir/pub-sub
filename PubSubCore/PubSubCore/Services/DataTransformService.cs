@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using PubSub.Models;
 using PubSubCore.Extensions;
+using PubSubCore.Models;
 
 namespace PubSubCore.Services
 {

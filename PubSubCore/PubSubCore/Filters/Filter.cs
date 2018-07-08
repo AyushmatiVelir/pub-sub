@@ -1,16 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
-using PubSub.Models;
 using PubSub.Subscribers;
+using PubSubCore.Models;
+using PubSubCore.Subscribers;
 
-namespace PubSub.Filters
+namespace PubSubCore.Filters
 {
 	public class Filter
 	{
-		static Dictionary<string, List<ISubscriber>> _subscribersList = new Dictionary<string, List<ISubscriber>>();
+		private static Dictionary<string, List<ISubscriber>> _subscribersList = new Dictionary<string, List<ISubscriber>>();
+
+		public static Dictionary<string, List<ISubscriber>> SubscribersList
+		{
+			get
+			{
+				lock (_subscribersList)
+				{
+					return _subscribersList;
+				}
+			}
+		}
 
 		public static void PushToSubscribers(NewsDetailsModel data, string topicName)
 		{
+			if (data == null || string.IsNullOrWhiteSpace(topicName))
+				return;
 			List<ISubscriber> subscribers = GetSubscribers(topicName);
 			if (subscribers == null) return;
 
@@ -27,61 +41,47 @@ namespace PubSub.Filters
 			}
 		}
 
-		public static Dictionary<string, List<ISubscriber>> SubscribersList
+		private static List<ISubscriber> GetSubscribers(string topicName)
 		{
-			get
+			lock (_subscribersList)
 			{
-				lock (typeof(Filter))
-				{
-					return _subscribersList;
-				}
-			}
-
-		}
-
-		public static List<ISubscriber> GetSubscribers(String topicName)
-		{
-			lock (typeof(Filter))
-			{
-				if (SubscribersList.ContainsKey(topicName))
-				{
-					return SubscribersList[topicName];
-				}
-				else
-					return null;
+				return _subscribersList.ContainsKey(topicName) ? _subscribersList[topicName] : null;
 			}
 		}
 
-		public static void AddSubscriber(String topicName, ISubscriber subscriberCallbackReference)
+		public static void AddSubscriber(string topicName, ISubscriber subscriberReference)
 		{
-			lock (typeof(Filter))
+			if (string.IsNullOrWhiteSpace(topicName) || subscriberReference == null)
+				return;
+			lock (_subscribersList)
 			{
-				if (SubscribersList.ContainsKey(topicName))
+				if (_subscribersList.ContainsKey(topicName))
 				{
-					if (!SubscribersList[topicName].Contains(subscriberCallbackReference))
+					if (!_subscribersList[topicName].Contains(subscriberReference))
 					{
-						SubscribersList[topicName].Add(subscriberCallbackReference);
+						_subscribersList[topicName].Add(subscriberReference);
 					}
 				}
 				else
 				{
-					List<ISubscriber> newSubscribersList = new List<ISubscriber>();
-					newSubscribersList.Add(subscriberCallbackReference);
-					SubscribersList.Add(topicName, newSubscribersList);
+					var newSubscribersList = new List<ISubscriber> { subscriberReference };
+					_subscribersList.Add(topicName, newSubscribersList);
 				}
 			}
 
 		}
 
-		public static void RemoveSubscriber(String topicName, ISubscriber subscriberCallbackReference)
+		public static void RemoveSubscriber(string topicName, ISubscriber subscriberReference)
 		{
-			lock (typeof(Filter))
+			if (string.IsNullOrWhiteSpace(topicName) || subscriberReference == null)
+				return;
+			lock (_subscribersList)
 			{
-				if (SubscribersList.ContainsKey(topicName))
+				if (_subscribersList.ContainsKey(topicName))
 				{
-					if (SubscribersList[topicName].Contains(subscriberCallbackReference))
+					if (_subscribersList[topicName].Contains(subscriberReference))
 					{
-						SubscribersList[topicName].Remove(subscriberCallbackReference);
+						_subscribersList[topicName].Remove(subscriberReference);
 					}
 				}
 			}

@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Text;
-using PubSub.Filters;
-using PubSub.Models;
-using PubSub.Subscribers;
+﻿using PubSubCore.Filters;
+using PubSubCore.Models;
 
-namespace PubSubCore.Services
+namespace PubSubCore.Publisher
 {
 	public class Publisher : IPublisher
 	{

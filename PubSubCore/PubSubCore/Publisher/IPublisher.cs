@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using PubSub.Models;
+﻿using PubSubCore.Models;
 
-namespace PubSubCore.Services
+namespace PubSubCore.Publisher
 {
-    interface IPublisher
+    public interface IPublisher
     {
 	    void Publish(NewsDetailsModel data, string topicName);
     }

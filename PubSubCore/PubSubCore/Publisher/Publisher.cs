@@ -7,7 +7,7 @@ namespace PubSubCore.Publisher
 	{
 		public void Publish(NewsDetailsModel data, string topicName)
 		{
-			Filter.PushToSubscribers(data, topicName);
+			Filter.FilterInstance.PushToSubscribers(data, topicName);
 		}
 	}
 }

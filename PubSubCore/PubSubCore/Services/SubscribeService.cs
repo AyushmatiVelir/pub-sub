@@ -13,7 +13,7 @@ namespace PubSubCore.Services
 		{
 			foreach (var subscriber in subscribers)
 			{
-				Filter.AddSubscriber(topicName, subscriber);
+				Filter.FilterInstance.AddSubscriber(topicName, subscriber);
 			}
 
 		}
@@ -22,7 +22,7 @@ namespace PubSubCore.Services
 		{
 			foreach (var subscriber in subscribers)
 			{
-				Filter.RemoveSubscriber(topicName, subscriber);
+				Filter.FilterInstance.RemoveSubscriber(topicName, subscriber);
 			}
 		}
 	}

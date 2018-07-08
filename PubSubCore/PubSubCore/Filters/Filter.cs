@@ -6,22 +6,18 @@ using PubSubCore.Subscribers;
 
 namespace PubSubCore.Filters
 {
-	public class Filter
+	public sealed class Filter
 	{
-		private static Dictionary<string, List<ISubscriber>> _subscribersList = new Dictionary<string, List<ISubscriber>>();
-
-		public static Dictionary<string, List<ISubscriber>> SubscribersList
+		private static readonly Lazy<Filter> LazyFilter =
+			new Lazy<Filter>(() => new Filter());
+		private Filter()
 		{
-			get
-			{
-				lock (_subscribersList)
-				{
-					return _subscribersList;
-				}
-			}
 		}
+		public static Filter FilterInstance => LazyFilter.Value;
 
-		public static void PushToSubscribers(NewsDetailsModel data, string topicName)
+		public Dictionary<string, List<ISubscriber>> SubscribersList { get; } = new Dictionary<string, List<ISubscriber>>();
+
+		public void PushToSubscribers(NewsDetailsModel data, string topicName)
 		{
 			if (data == null || string.IsNullOrWhiteSpace(topicName))
 				return;
@@ -41,50 +37,42 @@ namespace PubSubCore.Filters
 			}
 		}
 
-		private static List<ISubscriber> GetSubscribers(string topicName)
+		private List<ISubscriber> GetSubscribers(string topicName)
 		{
-			lock (_subscribersList)
-			{
-				return _subscribersList.ContainsKey(topicName) ? _subscribersList[topicName] : null;
-			}
-		}
 
-		public static void AddSubscriber(string topicName, ISubscriber subscriberReference)
-		{
-			if (string.IsNullOrWhiteSpace(topicName) || subscriberReference == null)
-				return;
-			lock (_subscribersList)
-			{
-				if (_subscribersList.ContainsKey(topicName))
-				{
-					if (!_subscribersList[topicName].Contains(subscriberReference))
-					{
-						_subscribersList[topicName].Add(subscriberReference);
-					}
-				}
-				else
-				{
-					var newSubscribersList = new List<ISubscriber> { subscriberReference };
-					_subscribersList.Add(topicName, newSubscribersList);
-				}
-			}
+			return SubscribersList.ContainsKey(topicName) ? SubscribersList[topicName] : null;
 
 		}
 
-		public static void RemoveSubscriber(string topicName, ISubscriber subscriberReference)
+		public void AddSubscriber(string topicName, ISubscriber subscriberReference)
 		{
 			if (string.IsNullOrWhiteSpace(topicName) || subscriberReference == null)
 				return;
-			lock (_subscribersList)
+
+			if (SubscribersList.ContainsKey(topicName))
 			{
-				if (_subscribersList.ContainsKey(topicName))
+				if (!SubscribersList[topicName].Contains(subscriberReference))
 				{
-					if (_subscribersList[topicName].Contains(subscriberReference))
-					{
-						_subscribersList[topicName].Remove(subscriberReference);
-					}
+					SubscribersList[topicName].Add(subscriberReference);
 				}
 			}
+			else
+			{
+				var newSubscribersList = new List<ISubscriber> { subscriberReference };
+				SubscribersList.Add(topicName, newSubscribersList);
+			}
+		}
+
+		public void RemoveSubscriber(string topicName, ISubscriber subscriberReference)
+		{
+			if (string.IsNullOrWhiteSpace(topicName) || subscriberReference == null)
+				return;
+			if (!SubscribersList.ContainsKey(topicName)) return;
+			if (SubscribersList[topicName].Contains(subscriberReference))
+			{
+				SubscribersList[topicName].Remove(subscriberReference);
+			}
+
 		}
 
 	}
